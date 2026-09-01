@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet } from 'react-native';
-import { Card, IconButton, Text } from 'react-native-paper';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Card, Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
@@ -17,12 +17,9 @@ export function AddMealCard({ onPress }: AddMealCardProps) {
       style={({ pressed }) => [styles.pressable, pressed && styles.pressed]}
     >
       <Card mode="contained" style={styles.card} contentStyle={styles.content}>
-        <IconButton
-          icon="plus"
-          iconColor={colors.surface}
-          size={32}
-          style={styles.button}
-        />
+        <View style={styles.plusButton}>
+          <Text style={styles.plus}>+</Text>
+        </View>
         <Text variant="bodyMedium" style={styles.label}>
           Add Meal
         </Text>
@@ -34,7 +31,7 @@ export function AddMealCard({ onPress }: AddMealCardProps) {
 const styles = StyleSheet.create({
   pressable: {
     borderRadius: 7,
-    marginBottom: 38,
+    marginBottom: 28,
   },
   pressed: {
     opacity: 0.78,
@@ -46,19 +43,30 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: 'center',
-    gap: 6,
     justifyContent: 'center',
-    minHeight: 106,
-    paddingBottom: 16,
-    paddingTop: 16,
+    minHeight: 94,
+    paddingBottom: 12,
+    paddingTop: 12,
   },
-  button: {
+  plusButton: {
+    alignItems: 'center',
     backgroundColor: colors.primary,
-    margin: 0,
+    borderRadius: 22,
+    height: 44,
+    justifyContent: 'center',
+    marginBottom: 5,
+    width: 44,
+  },
+  plus: {
+    color: colors.surface,
+    fontFamily: typography.body,
+    fontSize: 34,
+    fontWeight: '400',
+    lineHeight: 38,
   },
   label: {
     color: colors.text,
     fontFamily: typography.body,
-    fontSize: 17,
+    fontSize: 14,
   },
 });

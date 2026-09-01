@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     borderTopColor: colors.divider,
     borderTopWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
-    height: 52,
+    height: 48,
   },
   item: {
     alignItems: 'center',
@@ -65,8 +65,9 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.textMuted,
-    fontFamily: typography.display,
-    fontWeight: '700',
+    fontFamily: typography.body,
+    fontSize: 13,
+    fontWeight: '500',
     letterSpacing: 0,
   },
   activeLabel: {

@@ -40,12 +40,12 @@ export function MacroSummary({ macros }: MacroSummaryProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 11,
-    marginLeft: 8,
-    paddingTop: 18,
+    gap: 9,
+    marginLeft: 2,
+    paddingTop: 16,
   },
   row: {
-    gap: 7,
+    gap: 5,
   },
   copy: {
     alignItems: 'center',
@@ -54,17 +54,19 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.text,
-    fontFamily: typography.display,
-    fontWeight: '800',
+    fontFamily: typography.body,
+    fontSize: 14,
+    fontWeight: '600',
   },
   value: {
     color: colors.text,
     fontFamily: typography.body,
-    fontWeight: '500',
+    fontSize: 13,
+    fontWeight: '400',
   },
   progress: {
     backgroundColor: colors.primarySoft,
     borderRadius: 999,
-    height: 8,
+    height: 7,
   },
 });

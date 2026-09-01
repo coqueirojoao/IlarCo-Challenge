@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Snackbar, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -119,98 +119,108 @@ export function NutritionDashboardScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.hero}>
-          <Text variant="labelLarge" style={styles.date}>
-            {nutritionSummary.dateLabel}
-          </Text>
+    <View style={styles.page}>
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.hero}>
+            <Text variant="labelLarge" style={styles.date}>
+              {nutritionSummary.dateLabel}
+            </Text>
 
-          <BrandHeader name={nutritionSummary.brandName} />
+            <BrandHeader name={nutritionSummary.brandName} />
 
-          <View style={styles.summaryRow}>
-            <CircularGoalProgress
-              caloriesLeft={caloriesLeft}
-              percentage={dailyGoalPercentage}
-            />
-            <MacroSummary macros={nutritionSummary.macros} />
+            <View style={styles.summaryRow}>
+              <CircularGoalProgress
+                caloriesLeft={caloriesLeft}
+                percentage={dailyGoalPercentage}
+              />
+              <MacroSummary macros={nutritionSummary.macros} />
+            </View>
           </View>
-        </View>
 
-        <DashboardTabs activeTab={activeTab} onTabPress={handleTabPress} />
+          <DashboardTabs activeTab={activeTab} onTabPress={handleTabPress} />
 
-        <View style={styles.mealsSection}>
-          <Text variant="titleMedium" style={styles.sectionTitle}>
-            MEALS
-          </Text>
+          <View style={styles.mealsSection}>
+            <Text variant="titleMedium" style={styles.sectionTitle}>
+              MEALS
+            </Text>
 
-          {meals.map((meal) => (
-            <MealCard key={meal.id} meal={meal} />
-          ))}
+            {meals.map((meal) => (
+              <MealCard key={meal.id} meal={meal} />
+            ))}
 
-          <AddMealCard onPress={openAddMealModal} />
+            <AddMealCard onPress={openAddMealModal} />
 
-          <Button
-            mode="contained"
-            buttonColor={colors.primary}
-            textColor={colors.surface}
-            labelStyle={styles.logFoodLabel}
-            contentStyle={styles.logFoodContent}
-            style={styles.logFoodButton}
-            onPress={openAddMealModal}
-          >
-            LOG FOOD
-          </Button>
-        </View>
-      </ScrollView>
+            <Button
+              mode="contained"
+              buttonColor={colors.primary}
+              textColor={colors.surface}
+              labelStyle={styles.logFoodLabel}
+              contentStyle={styles.logFoodContent}
+              style={styles.logFoodButton}
+              onPress={openAddMealModal}
+            >
+              LOG FOOD
+            </Button>
+          </View>
+        </ScrollView>
 
-      <AddMealModal
-        errors={formErrors}
-        onChange={updateFormValue}
-        onDismiss={closeAddMealModal}
-        onSubmit={addMeal}
-        values={formValues}
-        visible={isModalVisible}
-      />
+        <AddMealModal
+          errors={formErrors}
+          onChange={updateFormValue}
+          onDismiss={closeAddMealModal}
+          onSubmit={addMeal}
+          values={formValues}
+          visible={isModalVisible}
+        />
 
-      <Snackbar
-        visible={Boolean(snackbarMessage)}
-        onDismiss={() => setSnackbarMessage('')}
-        duration={2200}
-      >
-        {snackbarMessage}
-      </Snackbar>
-    </SafeAreaView>
+        <Snackbar
+          visible={Boolean(snackbarMessage)}
+          onDismiss={() => setSnackbarMessage('')}
+          duration={2200}
+        >
+          {snackbarMessage}
+        </Snackbar>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  page: {
+    alignItems: 'center',
+    backgroundColor: colors.background,
+    flex: 1,
+  },
   safeArea: {
     backgroundColor: colors.background,
     flex: 1,
+    maxWidth: Platform.OS === 'web' ? 390 : undefined,
+    width: '100%',
   },
   container: {
     backgroundColor: colors.background,
     flex: 1,
   },
   content: {
-    paddingBottom: 26,
+    paddingBottom: 22,
   },
   hero: {
     backgroundColor: '#F1FBF3',
-    paddingBottom: 30,
-    paddingHorizontal: 22,
-    paddingTop: 18,
+    paddingBottom: 20,
+    paddingHorizontal: 16,
+    paddingTop: 12,
   },
   date: {
     alignSelf: 'flex-start',
     color: colors.text,
-    fontFamily: typography.display,
-    fontWeight: '800',
+    fontFamily: typography.body,
+    fontSize: 12,
+    fontWeight: '600',
     letterSpacing: 0,
   },
   summaryRow: {
@@ -218,16 +228,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
     justifyContent: 'space-between',
-    marginTop: 26,
+    marginTop: 22,
   },
   mealsSection: {
-    paddingHorizontal: 16,
-    paddingTop: 22,
+    paddingHorizontal: 14,
+    paddingTop: 20,
   },
   sectionTitle: {
     color: colors.text,
-    fontFamily: typography.display,
-    fontWeight: '800',
+    fontFamily: typography.body,
+    fontSize: 16,
+    fontWeight: '500',
     marginBottom: 14,
   },
   logFoodButton: {
@@ -240,9 +251,9 @@ const styles = StyleSheet.create({
     height: 46,
   },
   logFoodLabel: {
-    fontFamily: typography.display,
-    fontSize: 16,
-    fontWeight: '800',
+    fontFamily: typography.body,
+    fontSize: 14,
+    fontWeight: '600',
     letterSpacing: 0,
   },
 });

@@ -10,12 +10,12 @@ interface CircularGoalProgressProps {
   percentage: number;
 }
 
-const ringSize = 150;
-const strokeWidth = 10;
+const ringSize = 134;
+const strokeWidth = 9;
 const center = ringSize / 2;
-const radius = 55;
+const radius = 48;
 const circumference = 2 * Math.PI * radius;
-const arcPath = 'M 23 75 A 55 55 0 0 1 127 75';
+const arcPath = 'M 29 54 A 44 44 0 0 1 105 54';
 
 export function CircularGoalProgress({
   caloriesLeft,
@@ -35,7 +35,7 @@ export function CircularGoalProgress({
           <SvgText
             fill={colors.text}
             fontFamily={typography.body}
-            fontSize="16"
+            fontSize="12"
             fontWeight="500"
           >
             <TextPath href="#goal-caption-arc" startOffset="50%" textAnchor="middle">
@@ -44,7 +44,7 @@ export function CircularGoalProgress({
           </SvgText>
           <Circle
             cx={center}
-            cy={center + 12}
+            cy={center + 8}
             r={radius}
             stroke={colors.primarySoft}
             strokeWidth={strokeWidth}
@@ -52,7 +52,7 @@ export function CircularGoalProgress({
           />
           <Circle
             cx={center}
-            cy={center + 12}
+            cy={center + 8}
             r={radius}
             stroke={colors.primary}
             strokeWidth={strokeWidth}
@@ -60,7 +60,7 @@ export function CircularGoalProgress({
             strokeLinecap="round"
             strokeDasharray={`${circumference} ${circumference}`}
             strokeDashoffset={strokeDashoffset}
-            transform={`rotate(-90 ${center} ${center + 12})`}
+            transform={`rotate(-90 ${center} ${center + 8})`}
           />
         </Svg>
         <View style={styles.center}>
@@ -79,7 +79,7 @@ export function CircularGoalProgress({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: 162,
+    width: 140,
   },
   ring: {
     alignItems: 'center',
@@ -90,25 +90,25 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
     backgroundColor: '#F8FCFA',
-    borderRadius: 45,
-    height: 90,
+    borderRadius: 40,
+    height: 80,
     justifyContent: 'center',
-    marginTop: 24,
+    marginTop: 16,
     position: 'absolute',
-    width: 90,
+    width: 80,
   },
   calories: {
     color: colors.text,
     fontFamily: typography.display,
-    fontSize: 38,
-    fontWeight: '900',
+    fontSize: 28,
+    fontWeight: '800',
     letterSpacing: 0,
-    lineHeight: 42,
+    lineHeight: 32,
   },
   subtitle: {
     color: colors.textMuted,
     fontFamily: typography.body,
-    fontSize: 16,
+    fontSize: 13,
     marginTop: -3,
   },
 });

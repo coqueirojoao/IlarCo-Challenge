@@ -33,15 +33,15 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
     borderRadius: 7,
-    marginBottom: 14,
+    marginBottom: 12,
   },
   content: {
     alignItems: 'flex-end',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    minHeight: 86,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    minHeight: 78,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
   details: {
     flex: 1,
@@ -50,18 +50,21 @@ const styles = StyleSheet.create({
   title: {
     color: colors.text,
     fontFamily: typography.body,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '400',
     marginBottom: 3,
   },
   item: {
     color: colors.text,
     fontFamily: typography.body,
-    lineHeight: 21,
+    fontSize: 13,
+    lineHeight: 18,
   },
   calories: {
     color: colors.text,
-    fontFamily: typography.display,
-    fontWeight: '500',
+    fontFamily: typography.body,
+    fontSize: 13,
+    fontWeight: '400',
     marginBottom: 2,
   },
 });
