@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import Svg, { Circle } from 'react-native-svg';
 
 import { colors } from '../theme/colors';
 
@@ -8,19 +9,48 @@ interface CircularGoalProgressProps {
   percentage: number;
 }
 
+const ringSize = 128;
+const strokeWidth = 10;
+const center = ringSize / 2;
+const radius = (ringSize - strokeWidth) / 2;
+const circumference = 2 * Math.PI * radius;
+
 export function CircularGoalProgress({
   caloriesLeft,
   percentage,
 }: CircularGoalProgressProps) {
+  const normalizedPercentage = Math.min(Math.max(percentage, 0), 100);
+  const strokeDashoffset =
+    circumference * (1 - normalizedPercentage / 100);
+
   return (
     <View style={styles.container}>
       <Text variant="labelLarge" style={styles.caption}>
-        {percentage}% of daily goal
+        {normalizedPercentage}% of daily goal
       </Text>
       <View style={styles.ring}>
-        <View style={styles.track} />
-        <View style={[styles.arc, styles.arcOne]} />
-        <View style={[styles.arc, styles.arcTwo]} />
+        <Svg width={ringSize} height={ringSize} viewBox={`0 0 ${ringSize} ${ringSize}`}>
+          <Circle
+            cx={center}
+            cy={center}
+            r={radius}
+            stroke={colors.primarySoft}
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
+          <Circle
+            cx={center}
+            cy={center}
+            r={radius}
+            stroke={colors.primary}
+            strokeWidth={strokeWidth}
+            fill="none"
+            strokeLinecap="round"
+            strokeDasharray={`${circumference} ${circumference}`}
+            strokeDashoffset={strokeDashoffset}
+            transform={`rotate(-90 ${center} ${center})`}
+          />
+        </Svg>
         <View style={styles.center}>
           <Text variant="headlineMedium" style={styles.calories}>
             {caloriesLeft}
@@ -33,8 +63,6 @@ export function CircularGoalProgress({
     </View>
   );
 }
-
-const ringSize = 128;
 
 const styles = StyleSheet.create({
   container: {
@@ -52,38 +80,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: ringSize,
   },
-  track: {
-    borderColor: colors.primarySoft,
-    borderRadius: ringSize / 2,
-    borderWidth: 10,
-    height: ringSize,
-    position: 'absolute',
-    width: ringSize,
-  },
-  arc: {
-    borderColor: colors.primary,
-    borderRadius: ringSize / 2,
-    borderWidth: 10,
-    height: ringSize,
-    position: 'absolute',
-    width: ringSize,
-  },
-  arcOne: {
-    borderBottomColor: 'transparent',
-    borderLeftColor: 'transparent',
-    transform: [{ rotate: '42deg' }],
-  },
-  arcTwo: {
-    borderBottomColor: 'transparent',
-    borderRightColor: 'transparent',
-    transform: [{ rotate: '-46deg' }],
-  },
   center: {
     alignItems: 'center',
     backgroundColor: '#F8FCFA',
     borderRadius: 46,
     height: 92,
     justifyContent: 'center',
+    position: 'absolute',
     width: 92,
   },
   calories: {
