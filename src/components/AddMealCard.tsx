@@ -1,29 +1,47 @@
-import { StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { Card, IconButton, Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
 
-export function AddMealCard() {
+interface AddMealCardProps {
+  onPress: () => void;
+}
+
+export function AddMealCard({ onPress }: AddMealCardProps) {
   return (
-    <Card mode="contained" style={styles.card} contentStyle={styles.content}>
-      <IconButton
-        icon="plus"
-        iconColor={colors.surface}
-        size={30}
-        style={styles.button}
-      />
-      <Text variant="bodyMedium" style={styles.label}>
-        Add Meal
-      </Text>
-    </Card>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Add a new meal"
+      onPress={onPress}
+      style={({ pressed }) => [styles.pressable, pressed && styles.pressed]}
+    >
+      <Card mode="contained" style={styles.card} contentStyle={styles.content}>
+        <IconButton
+          icon="plus"
+          iconColor={colors.surface}
+          size={30}
+          style={styles.button}
+        />
+        <Text variant="bodyMedium" style={styles.label}>
+          Add Meal
+        </Text>
+      </Card>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
+  pressable: {
+    borderRadius: 7,
+    marginBottom: 22,
+  },
+  pressed: {
+    opacity: 0.78,
+    transform: [{ scale: 0.99 }],
+  },
   card: {
     backgroundColor: colors.surface,
     borderRadius: 7,
-    marginBottom: 22,
   },
   content: {
     alignItems: 'center',

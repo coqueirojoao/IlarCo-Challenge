@@ -1,17 +1,122 @@
+import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button, Snackbar, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AddMealCard } from '../components/AddMealCard';
+import { AddMealModal } from '../components/AddMealModal';
 import { BrandHeader } from '../components/BrandHeader';
 import { CircularGoalProgress } from '../components/CircularGoalProgress';
-import { DashboardTabs } from '../components/DashboardTabs';
+import { DashboardTabs, type DashboardTab } from '../components/DashboardTabs';
 import { MacroSummary } from '../components/MacroSummary';
 import { MealCard } from '../components/MealCard';
 import { nutritionSummary } from '../data/nutritionMock';
 import { colors } from '../theme/colors';
+import type { Meal, MealFormErrors, MealFormValues } from '../types/nutrition';
+
+const emptyForm: MealFormValues = {
+  title: '',
+  items: '',
+  calories: '',
+};
 
 export function NutritionDashboardScreen() {
+  const [activeTab, setActiveTab] = useState<DashboardTab>('TODAY');
+  const [meals, setMeals] = useState<Meal[]>(nutritionSummary.meals);
+  const [formValues, setFormValues] = useState<MealFormValues>(emptyForm);
+  const [formErrors, setFormErrors] = useState<MealFormErrors>({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const addedCalories = useMemo(() => {
+    return meals
+      .slice(nutritionSummary.meals.length)
+      .reduce((total, meal) => total + meal.calories, 0);
+  }, [meals]);
+
+  const caloriesLeft = Math.max(
+    nutritionSummary.caloriesLeft - addedCalories,
+    0,
+  );
+  const dailyGoalPercentage = Math.min(
+    nutritionSummary.dailyGoalPercentage +
+      Math.round((addedCalories / nutritionSummary.caloriesLeft) * 25),
+    100,
+  );
+
+  function openAddMealModal() {
+    setFormErrors({});
+    setIsModalVisible(true);
+  }
+
+  function closeAddMealModal() {
+    setIsModalVisible(false);
+    setFormValues(emptyForm);
+    setFormErrors({});
+  }
+
+  function updateFormValue<Field extends keyof MealFormValues>(
+    field: Field,
+    value: MealFormValues[Field],
+  ) {
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      [field]: value,
+    }));
+    setFormErrors((currentErrors) => ({
+      ...currentErrors,
+      [field]: undefined,
+    }));
+  }
+
+  function validateForm(values: MealFormValues): MealFormErrors {
+    const calories = Number(values.calories);
+    const errors: MealFormErrors = {};
+
+    if (!values.title.trim()) {
+      errors.title = 'Enter a meal name.';
+    }
+
+    if (!values.items.trim()) {
+      errors.items = 'Enter at least one item.';
+    }
+
+    if (!Number.isFinite(calories) || calories <= 0) {
+      errors.calories = 'Enter calories greater than zero.';
+    }
+
+    return errors;
+  }
+
+  function addMeal() {
+    const errors = validateForm(formValues);
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    const newMeal: Meal = {
+      id: `meal-${Date.now()}`,
+      title: formValues.title.trim(),
+      items: formValues.items
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean),
+      calories: Number(formValues.calories),
+    };
+
+    setMeals((currentMeals) => [...currentMeals, newMeal]);
+    setActiveTab('TODAY');
+    closeAddMealModal();
+    setSnackbarMessage(`${newMeal.title} added.`);
+  }
+
+  function handleTabPress(tab: DashboardTab) {
+    setActiveTab(tab);
+    setSnackbarMessage(`${tab.charAt(0)}${tab.slice(1).toLowerCase()} selected.`);
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -20,47 +125,33 @@ export function NutritionDashboardScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.hero}>
-          <View style={styles.statusRow}>
-            <View>
-              <Text variant="bodyMedium" style={styles.time}>
-                {nutritionSummary.currentTime}
-              </Text>
-              <Text variant="labelMedium" style={styles.date}>
-                {nutritionSummary.dateLabel}
-              </Text>
-            </View>
-            <View style={styles.statusIcons}>
-              <View style={[styles.signalBar, styles.signalBarShort]} />
-              <View style={[styles.signalBar, styles.signalBarMedium]} />
-              <View style={styles.signalBar} />
-              <View style={styles.wifiDot} />
-              <View style={styles.battery} />
-            </View>
-          </View>
+          <Text variant="labelLarge" style={styles.date}>
+            {nutritionSummary.dateLabel}
+          </Text>
 
           <BrandHeader name={nutritionSummary.brandName} />
 
           <View style={styles.summaryRow}>
             <CircularGoalProgress
-              caloriesLeft={nutritionSummary.caloriesLeft}
-              percentage={nutritionSummary.dailyGoalPercentage}
+              caloriesLeft={caloriesLeft}
+              percentage={dailyGoalPercentage}
             />
             <MacroSummary macros={nutritionSummary.macros} />
           </View>
         </View>
 
-        <DashboardTabs activeTab="TODAY" />
+        <DashboardTabs activeTab={activeTab} onTabPress={handleTabPress} />
 
         <View style={styles.mealsSection}>
           <Text variant="titleMedium" style={styles.sectionTitle}>
             MEALS
           </Text>
 
-          {nutritionSummary.meals.map((meal) => (
+          {meals.map((meal) => (
             <MealCard key={meal.id} meal={meal} />
           ))}
 
-          <AddMealCard />
+          <AddMealCard onPress={openAddMealModal} />
 
           <Button
             mode="contained"
@@ -69,11 +160,29 @@ export function NutritionDashboardScreen() {
             labelStyle={styles.logFoodLabel}
             contentStyle={styles.logFoodContent}
             style={styles.logFoodButton}
+            onPress={openAddMealModal}
           >
             LOG FOOD
           </Button>
         </View>
       </ScrollView>
+
+      <AddMealModal
+        errors={formErrors}
+        onChange={updateFormValue}
+        onDismiss={closeAddMealModal}
+        onSubmit={addMeal}
+        values={formValues}
+        visible={isModalVisible}
+      />
+
+      <Snackbar
+        visible={Boolean(snackbarMessage)}
+        onDismiss={() => setSnackbarMessage('')}
+        duration={2200}
+      >
+        {snackbarMessage}
+      </Snackbar>
     </SafeAreaView>
   );
 }
@@ -94,61 +203,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1FBF3',
     paddingBottom: 30,
     paddingHorizontal: 22,
-    paddingTop: 8,
-  },
-  statusRow: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  time: {
-    color: colors.text,
-    fontWeight: '600',
+    paddingTop: 18,
   },
   date: {
+    alignSelf: 'flex-start',
     color: colors.text,
-    fontWeight: '600',
-    marginTop: 2,
-  },
-  statusIcons: {
-    alignItems: 'flex-end',
-    flexDirection: 'row',
-    gap: 3,
-    marginTop: 7,
-  },
-  signalBar: {
-    backgroundColor: colors.text,
-    borderRadius: 2,
-    height: 9,
-    width: 3,
-  },
-  signalBarMedium: {
-    height: 7,
-  },
-  signalBarShort: {
-    height: 5,
-  },
-  wifiDot: {
-    backgroundColor: colors.text,
-    borderRadius: 5,
-    height: 8,
-    marginLeft: 5,
-    width: 8,
-  },
-  battery: {
-    borderColor: colors.text,
-    borderRadius: 3,
-    borderWidth: 2,
-    height: 10,
-    marginLeft: 6,
-    width: 20,
+    fontWeight: '700',
+    letterSpacing: 0,
   },
   summaryRow: {
     alignItems: 'center',
     flexDirection: 'row',
     gap: 12,
     justifyContent: 'space-between',
-    marginTop: 28,
+    marginTop: 26,
   },
   mealsSection: {
     paddingHorizontal: 16,

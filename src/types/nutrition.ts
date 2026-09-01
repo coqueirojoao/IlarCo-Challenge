@@ -5,6 +5,18 @@ export interface Meal {
   calories: number;
 }
 
+export interface MealFormValues {
+  title: string;
+  items: string;
+  calories: string;
+}
+
+export interface MealFormErrors {
+  title?: string;
+  items?: string;
+  calories?: string;
+}
+
 export interface MacroNutrient {
   id: string;
   label: string;
@@ -15,7 +27,6 @@ export interface MacroNutrient {
 
 export interface DailyNutritionSummary {
   dateLabel: string;
-  currentTime: string;
   brandName: string;
   dailyGoalPercentage: number;
   caloriesLeft: number;

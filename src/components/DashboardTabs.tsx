@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
@@ -9,16 +9,26 @@ export type DashboardTab = (typeof tabs)[number];
 
 interface DashboardTabsProps {
   activeTab: DashboardTab;
+  onTabPress: (tab: DashboardTab) => void;
 }
 
-export function DashboardTabs({ activeTab }: DashboardTabsProps) {
+export function DashboardTabs({ activeTab, onTabPress }: DashboardTabsProps) {
   return (
     <View style={styles.container}>
       {tabs.map((tab) => {
         const isActive = tab === activeTab;
 
         return (
-          <View key={tab} style={styles.item}>
+          <Pressable
+            accessibilityRole="tab"
+            accessibilityState={{ selected: isActive }}
+            key={tab}
+            onPress={() => onTabPress(tab)}
+            style={({ pressed }) => [
+              styles.item,
+              pressed && styles.pressed,
+            ]}
+          >
             <Text
               variant="labelLarge"
               style={[styles.label, isActive && styles.activeLabel]}
@@ -26,7 +36,7 @@ export function DashboardTabs({ activeTab }: DashboardTabsProps) {
               {tab}
             </Text>
             {isActive ? <View style={styles.indicator} /> : null}
-          </View>
+          </Pressable>
         );
       })}
     </View>
@@ -48,6 +58,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     position: 'relative',
+  },
+  pressed: {
+    backgroundColor: colors.surfaceMuted,
   },
   label: {
     color: colors.textMuted,
