@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import Svg, { Circle, Defs, Path, Text as SvgText, TextPath } from 'react-native-svg';
+import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
@@ -10,12 +10,82 @@ interface CircularGoalProgressProps {
   percentage: number;
 }
 
-const ringSize = 134;
+interface CurvedCaptionProps {
+  text: string;
+}
+
+const svgWidth = 142;
+const svgHeight = 158;
 const strokeWidth = 9;
-const center = ringSize / 2;
+const centerX = svgWidth / 2;
+const centerY = 92;
 const radius = 48;
+const captionRadius = 65;
+const captionArcDegrees = 80;
 const circumference = 2 * Math.PI * radius;
-const arcPath = 'M 29 54 A 44 44 0 0 1 105 54';
+
+function getCharacterWeight(character: string) {
+  if (character === ' ') {
+    return 0.45;
+  }
+
+  if ('ilI'.includes(character)) {
+    return 0.42;
+  }
+
+  if ('ftjr'.includes(character)) {
+    return 0.62;
+  }
+
+  if ('75%'.includes(character)) {
+    return 0.74;
+  }
+
+  return 0.86;
+}
+
+function CurvedCaption({ text }: CurvedCaptionProps) {
+  const captionTextPathStyle = StyleSheet.flatten(styles.goalCaptionTextPath);
+  const captionOffsetX = Number(captionTextPathStyle.left ?? 0);
+  const captionOffsetY = Number(captionTextPathStyle.top ?? 0);
+  const characters = text.split('');
+  const characterWeights = characters.map(getCharacterWeight);
+  const totalWeight = characterWeights.reduce((total, weight) => total + weight, 0);
+  const startAngle = -90 - captionArcDegrees / 2;
+  let consumedWeight = 0;
+
+  return (
+    <>
+      {characters.map((character, index) => {
+        const weight = characterWeights[index];
+        const angle = startAngle + ((consumedWeight + weight / 2) / totalWeight) * captionArcDegrees;
+        const angleInRadians = (angle * Math.PI) / 180;
+        const x = centerX + captionOffsetX + captionRadius * Math.cos(angleInRadians);
+        const y = centerY + captionOffsetY + captionRadius * Math.sin(angleInRadians);
+
+        consumedWeight += weight;
+
+        return (
+          <SvgText
+            key={`${character}-${index}`}
+            fill={colors.text}
+            fontFamily={typography.medium}
+            fontSize="11.5"
+            fontWeight="500"
+            originX={x}
+            originY={y}
+            rotation={angle + 90}
+            textAnchor="middle"
+            x={x}
+            y={y}
+          >
+            {character}
+          </SvgText>
+        );
+      })}
+    </>
+  );
+}
 
 export function CircularGoalProgress({
   caloriesLeft,
@@ -24,42 +94,22 @@ export function CircularGoalProgress({
   const normalizedPercentage = Math.min(Math.max(percentage, 0), 100);
   const strokeDashoffset =
     circumference * (1 - normalizedPercentage / 100);
-  const captionOffsetY = Number(
-    StyleSheet.flatten(styles.goalCaptionTextPath).top ?? 0,
-  );
 
   return (
     <View style={styles.container}>
       <View style={styles.ring}>
-        <Svg width={ringSize} height={ringSize} viewBox={`0 0 ${ringSize} ${ringSize}`}>
-          <Defs>
-            <Path id="goal-caption-arc" d={arcPath} />
-          </Defs>
-          <SvgText
-            fill={colors.text}
-            fontFamily={typography.medium}
-            fontSize="12"
-            transform={`translate(0 ${captionOffsetY})`}
-          >
-            <TextPath
-              href="#goal-caption-arc"
-              startOffset="50%"
-              textAnchor="middle"
-            >
-              {normalizedPercentage}% of daily goal
-            </TextPath>
-          </SvgText>
+        <Svg width={svgWidth} height={svgHeight} viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
           <Circle
-            cx={center}
-            cy={center + 8}
+            cx={centerX}
+            cy={centerY}
             r={radius}
             stroke={colors.primarySoft}
             strokeWidth={strokeWidth}
             fill="none"
           />
           <Circle
-            cx={center}
-            cy={center + 8}
+            cx={centerX}
+            cy={centerY}
             r={radius}
             stroke={colors.primary}
             strokeWidth={strokeWidth}
@@ -67,8 +117,9 @@ export function CircularGoalProgress({
             strokeLinecap="round"
             strokeDasharray={`${circumference} ${circumference}`}
             strokeDashoffset={strokeDashoffset}
-            transform={`rotate(-90 ${center} ${center + 8})`}
+            transform={`rotate(-90 ${centerX} ${centerY})`}
           />
+          <CurvedCaption text={`${normalizedPercentage}% of daily goal`} />
         </Svg>
         <View style={styles.center}>
           <Text variant="headlineMedium" style={styles.calories}>
@@ -86,16 +137,16 @@ export function CircularGoalProgress({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: 140,
+    width: svgWidth,
   },
   ring: {
-    alignItems: 'center',
-    height: ringSize,
-    justifyContent: 'center',
-    width: ringSize,
+    height: svgHeight,
+    position: 'relative',
+    width: svgWidth,
   },
   goalCaptionTextPath: {
-    top: -20,
+    left: 0,
+    top: 0,
   },
   center: {
     alignItems: 'center',
@@ -103,8 +154,9 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: 80,
     justifyContent: 'center',
-    marginTop: 16,
+    left: centerX - 40,
     position: 'absolute',
+    top: centerY - 40,
     width: 80,
   },
   calories: {

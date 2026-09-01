@@ -73,9 +73,10 @@ function formatMacroValue(macro: MacroNutrient) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginLeft: 2,
+    flex: 0,
+    marginLeft: 0,
     paddingTop: 17,
+    width: 162,
   },
   textRow: {
     alignItems: 'center',

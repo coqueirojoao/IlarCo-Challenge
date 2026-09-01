@@ -214,8 +214,8 @@ const styles = StyleSheet.create({
   summaryRow: {
     alignItems: 'center',
     flexDirection: 'row',
-    gap: 12,
-    justifyContent: 'space-between',
+    gap: 28,
+    justifyContent: 'center',
     marginTop: 22,
   },
   mealsSection: {
