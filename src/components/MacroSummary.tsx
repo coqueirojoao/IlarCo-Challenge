@@ -10,61 +10,111 @@ interface MacroSummaryProps {
 }
 
 export function MacroSummary({ macros }: MacroSummaryProps) {
+  const protein = macros.find((macro) => macro.id === 'protein');
+  const carbs = macros.find((macro) => macro.id === 'carbs');
+  const fat = macros.find((macro) => macro.id === 'fat');
+
   return (
     <View style={styles.container}>
-      {macros.map((macro) => {
-        const progress = macro.consumed / macro.target;
+      {protein ? <MacroTextLine macro={protein} /> : null}
+      {carbs ? <MacroTextLine macro={carbs} /> : null}
 
-        return (
-          <View key={macro.id} style={styles.row}>
-            <View style={styles.copy}>
-              <Text variant="labelLarge" style={styles.label}>
-                {macro.label}
-              </Text>
-              <Text variant="bodyMedium" style={styles.value}>
-                {macro.consumed}{macro.unit} / {macro.target}{macro.unit}
-              </Text>
-            </View>
-            <ProgressBar
-              progress={progress}
-              color={colors.primary}
-              style={styles.progress}
-            />
-          </View>
-        );
-      })}
+      {carbs ? <MacroProgressLine macro={carbs} /> : null}
+      {fat ? <MacroProgressLine macro={fat} /> : null}
+
+      {fat ? (
+        <Text variant="bodyMedium" style={styles.footerValue}>
+          {formatMacroValue(fat)}
+        </Text>
+      ) : null}
     </View>
   );
+}
+
+interface MacroLineProps {
+  macro: MacroNutrient;
+}
+
+function MacroTextLine({ macro }: MacroLineProps) {
+  return (
+    <View style={styles.textRow}>
+      <Text variant="labelLarge" style={styles.label}>
+        {macro.label}
+      </Text>
+      <Text variant="bodyMedium" style={styles.value}>
+        {formatMacroValue(macro)}
+      </Text>
+    </View>
+  );
+}
+
+function MacroProgressLine({ macro }: MacroLineProps) {
+  const progress = macro.consumed / macro.target;
+
+  return (
+    <View style={styles.progressRow}>
+      <Text variant="labelLarge" style={styles.progressLabel}>
+        {macro.label}
+      </Text>
+      <ProgressBar
+        progress={progress}
+        color={colors.primary}
+        style={styles.progress}
+      />
+    </View>
+  );
+}
+
+function formatMacroValue(macro: MacroNutrient) {
+  return `${macro.consumed}${macro.unit} / ${macro.target}${macro.unit}`;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 9,
     marginLeft: 2,
-    paddingTop: 16,
+    paddingTop: 17,
   },
-  row: {
-    gap: 5,
-  },
-  copy: {
+  textRow: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    marginBottom: 7,
   },
   label: {
     color: colors.text,
     fontFamily: typography.medium,
-    fontSize: 14,
+    fontSize: 13,
+    marginRight: 10,
+    minWidth: 43,
   },
   value: {
     color: colors.text,
     fontFamily: typography.regular,
+    fontSize: 12,
+  },
+  progressRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  progressLabel: {
+    color: colors.text,
+    fontFamily: typography.medium,
     fontSize: 13,
+    marginRight: 10,
+    minWidth: 43,
   },
   progress: {
     backgroundColor: colors.primarySoft,
     borderRadius: 999,
+    flex: 1,
     height: 7,
+  },
+  footerValue: {
+    color: colors.textMuted,
+    fontFamily: typography.regular,
+    fontSize: 12,
+    marginLeft: 53,
+    marginTop: -5,
   },
 });

@@ -127,10 +127,6 @@ export function NutritionDashboardScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.hero}>
-            <Text variant="labelLarge" style={styles.date}>
-              {nutritionSummary.dateLabel}
-            </Text>
-
             <BrandHeader name={nutritionSummary.brandName} />
 
             <View style={styles.summaryRow}>
@@ -213,14 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1FBF3',
     paddingBottom: 20,
     paddingHorizontal: 16,
-    paddingTop: 12,
-  },
-  date: {
-    alignSelf: 'flex-start',
-    color: colors.text,
-    fontFamily: typography.medium,
-    fontSize: 12,
-    letterSpacing: 0,
+    paddingTop: 22,
   },
   summaryRow: {
     alignItems: 'center',
@@ -254,5 +243,3 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
   },
 });
-
-

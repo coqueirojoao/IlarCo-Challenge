@@ -1,7 +1,6 @@
 import type { DailyNutritionSummary } from '../types/nutrition';
 
 export const nutritionSummary: DailyNutritionSummary = {
-  dateLabel: 'SUN, FEB 1',
   brandName: 'NutriTrack',
   dailyGoalPercentage: 75,
   caloriesLeft: 1500,

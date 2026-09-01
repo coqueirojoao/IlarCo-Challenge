@@ -26,7 +26,6 @@ export interface MacroNutrient {
 }
 
 export interface DailyNutritionSummary {
-  dateLabel: string;
   brandName: string;
   dailyGoalPercentage: number;
   caloriesLeft: number;
