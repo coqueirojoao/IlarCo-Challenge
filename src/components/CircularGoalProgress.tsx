@@ -24,6 +24,9 @@ export function CircularGoalProgress({
   const normalizedPercentage = Math.min(Math.max(percentage, 0), 100);
   const strokeDashoffset =
     circumference * (1 - normalizedPercentage / 100);
+  const captionOffsetY = Number(
+    StyleSheet.flatten(styles.goalCaptionTextPath).top ?? 0,
+  );
 
   return (
     <View style={styles.container}>
@@ -37,8 +40,13 @@ export function CircularGoalProgress({
             fontFamily={typography.body}
             fontSize="12"
             fontWeight="500"
+            transform={`translate(0 ${captionOffsetY})`}
           >
-            <TextPath href="#goal-caption-arc" startOffset="50%" textAnchor="middle">
+            <TextPath
+              href="#goal-caption-arc"
+              startOffset="50%"
+              textAnchor="middle"
+            >
               {normalizedPercentage}% of daily goal
             </TextPath>
           </SvgText>
@@ -86,6 +94,9 @@ const styles = StyleSheet.create({
     height: ringSize,
     justifyContent: 'center',
     width: ringSize,
+  },
+  goalCaptionTextPath: {
+    top: -10,
   },
   center: {
     alignItems: 'center',
