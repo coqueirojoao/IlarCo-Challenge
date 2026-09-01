@@ -2,6 +2,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import { Card, IconButton, Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 
 interface AddMealCardProps {
   onPress: () => void;
@@ -19,7 +20,7 @@ export function AddMealCard({ onPress }: AddMealCardProps) {
         <IconButton
           icon="plus"
           iconColor={colors.surface}
-          size={30}
+          size={32}
           style={styles.button}
         />
         <Text variant="bodyMedium" style={styles.label}>
@@ -33,7 +34,7 @@ export function AddMealCard({ onPress }: AddMealCardProps) {
 const styles = StyleSheet.create({
   pressable: {
     borderRadius: 7,
-    marginBottom: 22,
+    marginBottom: 38,
   },
   pressed: {
     opacity: 0.78,
@@ -45,10 +46,11 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: 'center',
+    gap: 6,
     justifyContent: 'center',
-    minHeight: 96,
-    paddingBottom: 12,
-    paddingTop: 10,
+    minHeight: 106,
+    paddingBottom: 16,
+    paddingTop: 16,
   },
   button: {
     backgroundColor: colors.primary,
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.text,
-    marginTop: -2,
+    fontFamily: typography.body,
+    fontSize: 17,
   },
 });

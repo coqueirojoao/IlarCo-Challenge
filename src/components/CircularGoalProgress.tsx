@@ -3,6 +3,7 @@ import { Text } from 'react-native-paper';
 import Svg, { Circle, Defs, Path, Text as SvgText, TextPath } from 'react-native-svg';
 
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 
 interface CircularGoalProgressProps {
   caloriesLeft: number;
@@ -14,7 +15,7 @@ const strokeWidth = 10;
 const center = ringSize / 2;
 const radius = 55;
 const circumference = 2 * Math.PI * radius;
-const arcPath = 'M 19 87 A 56 56 0 0 1 131 87';
+const arcPath = 'M 23 75 A 55 55 0 0 1 127 75';
 
 export function CircularGoalProgress({
   caloriesLeft,
@@ -31,7 +32,12 @@ export function CircularGoalProgress({
           <Defs>
             <Path id="goal-caption-arc" d={arcPath} />
           </Defs>
-          <SvgText fill={colors.text} fontSize="17" fontWeight="500">
+          <SvgText
+            fill={colors.text}
+            fontFamily={typography.body}
+            fontSize="16"
+            fontWeight="500"
+          >
             <TextPath href="#goal-caption-arc" startOffset="50%" textAnchor="middle">
               {normalizedPercentage}% of daily goal
             </TextPath>
@@ -93,12 +99,16 @@ const styles = StyleSheet.create({
   },
   calories: {
     color: colors.text,
-    fontWeight: '800',
+    fontFamily: typography.display,
+    fontSize: 38,
+    fontWeight: '900',
     letterSpacing: 0,
+    lineHeight: 42,
   },
   subtitle: {
     color: colors.textMuted,
+    fontFamily: typography.body,
+    fontSize: 16,
     marginTop: -3,
   },
 });
-

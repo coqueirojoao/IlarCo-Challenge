@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 
 const tabs = ['TODAY', 'HISTORY', 'FOODS', 'SETTINGS'] as const;
 
@@ -64,7 +65,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.textMuted,
-    fontWeight: '600',
+    fontFamily: typography.display,
+    fontWeight: '700',
     letterSpacing: 0,
   },
   activeLabel: {

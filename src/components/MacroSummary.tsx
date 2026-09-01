@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { ProgressBar, Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 import type { MacroNutrient } from '../types/nutrition';
 
 interface MacroSummaryProps {
@@ -53,10 +54,12 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.text,
-    fontWeight: '700',
+    fontFamily: typography.display,
+    fontWeight: '800',
   },
   value: {
     color: colors.text,
+    fontFamily: typography.body,
     fontWeight: '500',
   },
   progress: {

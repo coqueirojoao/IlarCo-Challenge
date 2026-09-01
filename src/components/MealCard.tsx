@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 import type { Meal } from '../types/nutrition';
 
 interface MealCardProps {
@@ -48,15 +49,18 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
+    fontFamily: typography.body,
     fontWeight: '500',
     marginBottom: 3,
   },
   item: {
     color: colors.text,
+    fontFamily: typography.body,
     lineHeight: 21,
   },
   calories: {
     color: colors.text,
+    fontFamily: typography.display,
     fontWeight: '500',
     marginBottom: 2,
   },

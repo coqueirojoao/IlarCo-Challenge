@@ -12,6 +12,7 @@ import { MacroSummary } from '../components/MacroSummary';
 import { MealCard } from '../components/MealCard';
 import { nutritionSummary } from '../data/nutritionMock';
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 import type { Meal, MealFormErrors, MealFormValues } from '../types/nutrition';
 
 const emptyForm: MealFormValues = {
@@ -208,7 +209,8 @@ const styles = StyleSheet.create({
   date: {
     alignSelf: 'flex-start',
     color: colors.text,
-    fontWeight: '700',
+    fontFamily: typography.display,
+    fontWeight: '800',
     letterSpacing: 0,
   },
   summaryRow: {
@@ -224,7 +226,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: colors.text,
-    fontWeight: '600',
+    fontFamily: typography.display,
+    fontWeight: '800',
     marginBottom: 14,
   },
   logFoodButton: {
@@ -237,8 +240,9 @@ const styles = StyleSheet.create({
     height: 46,
   },
   logFoodLabel: {
+    fontFamily: typography.display,
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '800',
     letterSpacing: 0,
   },
 });

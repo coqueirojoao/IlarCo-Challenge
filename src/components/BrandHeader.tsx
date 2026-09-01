@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 
 interface BrandHeaderProps {
   name: string;
@@ -27,16 +28,20 @@ const styles = StyleSheet.create({
   },
   name: {
     color: colors.text,
-    fontWeight: '800',
+    fontFamily: typography.brand,
+    fontSize: 37,
+    fontWeight: '900',
     letterSpacing: 0,
+    lineHeight: 44,
   },
   leaf: {
     backgroundColor: colors.primary,
     borderBottomLeftRadius: 16,
     borderTopRightRadius: 16,
     height: 22,
-    marginLeft: 4,
+    marginLeft: 5,
+    marginTop: 2,
     transform: [{ rotate: '-18deg' }],
-    width: 14,
+    width: 15,
   },
 });
