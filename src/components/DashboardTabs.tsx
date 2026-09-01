@@ -65,9 +65,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.textMuted,
-    fontFamily: typography.body,
+    fontFamily: typography.medium,
     fontSize: 13,
-    fontWeight: '500',
     letterSpacing: 0,
   },
   activeLabel: {

@@ -37,9 +37,8 @@ export function CircularGoalProgress({
           </Defs>
           <SvgText
             fill={colors.text}
-            fontFamily={typography.body}
+            fontFamily={typography.medium}
             fontSize="12"
-            fontWeight="500"
             transform={`translate(0 ${captionOffsetY})`}
           >
             <TextPath
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
     width: ringSize,
   },
   goalCaptionTextPath: {
-    top: -10,
+    top: -20,
   },
   center: {
     alignItems: 'center',
@@ -110,15 +109,14 @@ const styles = StyleSheet.create({
   },
   calories: {
     color: colors.text,
-    fontFamily: typography.display,
+    fontFamily: typography.bold,
     fontSize: 28,
-    fontWeight: '800',
     letterSpacing: 0,
     lineHeight: 32,
   },
   subtitle: {
     color: colors.textMuted,
-    fontFamily: typography.body,
+    fontFamily: typography.regular,
     fontSize: 13,
     marginTop: -3,
   },

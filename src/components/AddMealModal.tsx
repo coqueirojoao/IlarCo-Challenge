@@ -9,6 +9,7 @@ import {
 } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 import type { MealFormErrors, MealFormValues } from '../types/nutrition';
 
 interface AddMealModalProps {
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
-    fontWeight: '700',
+    fontFamily: typography.bold,
     marginBottom: 18,
   },
   input: {
@@ -118,3 +119,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+

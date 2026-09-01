@@ -218,9 +218,8 @@ const styles = StyleSheet.create({
   date: {
     alignSelf: 'flex-start',
     color: colors.text,
-    fontFamily: typography.body,
+    fontFamily: typography.medium,
     fontSize: 12,
-    fontWeight: '600',
     letterSpacing: 0,
   },
   summaryRow: {
@@ -236,9 +235,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: colors.text,
-    fontFamily: typography.body,
+    fontFamily: typography.medium,
     fontSize: 16,
-    fontWeight: '500',
     marginBottom: 14,
   },
   logFoodButton: {
@@ -251,9 +249,10 @@ const styles = StyleSheet.create({
     height: 46,
   },
   logFoodLabel: {
-    fontFamily: typography.body,
+    fontFamily: typography.medium,
     fontSize: 14,
-    fontWeight: '600',
     letterSpacing: 0,
   },
 });
+
+

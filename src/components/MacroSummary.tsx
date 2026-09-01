@@ -54,15 +54,13 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.text,
-    fontFamily: typography.body,
+    fontFamily: typography.medium,
     fontSize: 14,
-    fontWeight: '600',
   },
   value: {
     color: colors.text,
-    fontFamily: typography.body,
+    fontFamily: typography.regular,
     fontSize: 13,
-    fontWeight: '400',
   },
   progress: {
     backgroundColor: colors.primarySoft,

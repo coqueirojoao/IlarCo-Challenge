@@ -59,14 +59,13 @@ const styles = StyleSheet.create({
   },
   plus: {
     color: colors.surface,
-    fontFamily: typography.body,
+    fontFamily: typography.regular,
     fontSize: 34,
-    fontWeight: '400',
     lineHeight: 38,
   },
   label: {
     color: colors.text,
-    fontFamily: typography.body,
+    fontFamily: typography.regular,
     fontSize: 14,
   },
 });

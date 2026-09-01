@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontFamily: typography.brand,
     fontSize: 31,
-    fontWeight: '800',
     letterSpacing: 0,
     lineHeight: 38,
   },

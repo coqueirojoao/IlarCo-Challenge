@@ -49,22 +49,20 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
-    fontFamily: typography.body,
+    fontFamily: typography.regular,
     fontSize: 14,
-    fontWeight: '400',
     marginBottom: 3,
   },
   item: {
     color: colors.text,
-    fontFamily: typography.body,
+    fontFamily: typography.regular,
     fontSize: 13,
     lineHeight: 18,
   },
   calories: {
     color: colors.text,
-    fontFamily: typography.body,
+    fontFamily: typography.regular,
     fontSize: 13,
-    fontWeight: '400',
     marginBottom: 2,
   },
 });
