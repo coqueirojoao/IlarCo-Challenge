@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { ProgressBar, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
@@ -49,20 +49,22 @@ function MacroTextLine({ macro }: MacroLineProps) {
 }
 
 function MacroProgressLine({ macro }: MacroLineProps) {
-  const progress = macro.consumed / macro.target;
+  const progress = clampProgress(macro.consumed / macro.target);
 
   return (
     <View style={styles.progressRow}>
       <Text variant="labelLarge" style={styles.progressLabel}>
         {macro.label}
       </Text>
-      <ProgressBar
-        progress={progress}
-        color={colors.primary}
-        style={styles.progress}
-      />
+      <View style={styles.progressTrack}>
+        <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
+      </View>
     </View>
   );
+}
+
+function clampProgress(progress: number) {
+  return Math.min(Math.max(progress, 0), 1);
 }
 
 function formatMacroValue(macro: MacroNutrient) {
@@ -104,11 +106,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
     minWidth: 43,
   },
-  progress: {
+  progressTrack: {
     backgroundColor: colors.primarySoft,
     borderRadius: 999,
-    flex: 1,
     height: 7,
+    overflow: 'hidden',
+    width: 92,
+  },
+  progressFill: {
+    backgroundColor: colors.primary,
+    borderRadius: 999,
+    height: '100%',
   },
   footerValue: {
     color: colors.textMuted,
